@@ -1,19 +1,19 @@
-name: Publish to Registry
-on:
-  push:
-    branches:
-      - master
-    tags:
-      - v*
-jobs:
-  push:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
-      with:
-        name: vadv/prometheus-exporter-merger
-        username: vadv
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        tag_names: true
+# name: Publish to Registry
+# on:
+#   push:
+#     branches:
+#       - master
+#     tags:
+#       - v*
+# jobs:
+#   push:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@master
+#     - name: Publish to Registry
+#       uses: elgohr/Publish-Docker-Github-Action@master
+#       with:
+#         name: vadv/prometheus-exporter-merger
+#         username: vadv
+#         password: ${{ secrets.DOCKER_PASSWORD }}
+#         tag_names: true
