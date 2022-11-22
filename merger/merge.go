@@ -7,7 +7,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/pkg/errors"
+	// "github.com/pkg/errors"
 	prom "github.com/prometheus/client_model/go"
 	"github.com/prometheus/common/expfmt"
 	"golang.org/x/sync/errgroup"
@@ -24,13 +24,20 @@ func (m *merger) merge(ctx context.Context, w io.Writer) error {
 		g.Go(func() error {
 			resp, err := m.client.Get(source.url)
 			if err != nil {
-				return errors.Wrap(err, fmt.Sprintf("get url: %s", source.url))
+				fmt.Println("[ERR] cli.Get")
+				// fmt.Println("[ERR] get url: %s", source.url)
+				//return errors.Wrap(err, fmt.Sprintf("get url: %s", source.url))
+				// xiechen-func内? continue不可用
+				return nil
 			}
 			defer resp.Body.Close()
 			tp := new(expfmt.TextParser)
 			out, err := tp.TextToMetricFamilies(resp.Body)
 			if err != nil {
-				return errors.Wrap(err, fmt.Sprintf("parse url: %s", source.url))
+				fmt.Println("[ERR] TextToMetricFamilies")
+				// fmt.Println("[ERR] parse url: %s", source.url)
+				// return errors.Wrap(err, fmt.Sprintf("parse url: %s", source.url))
+				return nil
 			}
 			mu.Lock()
 			defer mu.Unlock()
