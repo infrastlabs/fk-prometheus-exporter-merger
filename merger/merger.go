@@ -12,7 +12,7 @@ import (
 
 type Merger interface {
 	Merge(w io.Writer) error
-	AddSource(url string, labels []*prom.LabelPair)
+	AddSource(url string, filter string, labels []*prom.LabelPair)
 }
 
 type merger struct {
@@ -24,6 +24,7 @@ type merger struct {
 
 type source struct {
 	url    string
+	filter string
 	labels []*prom.LabelPair
 }
 
@@ -46,10 +47,10 @@ func New(scrapeTimeout time.Duration) Merger {
 }
 
 // AddSource new source
-func (m *merger) AddSource(url string, labels []*prom.LabelPair) {
+func (m *merger) AddSource(url string, filter string, labels []*prom.LabelPair) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	m.sources = append(m.sources, &source{url: url, labels: labels})
+	m.sources = append(m.sources, &source{url: url, filter: filter, labels: labels})
 }
 
 // Merge sources

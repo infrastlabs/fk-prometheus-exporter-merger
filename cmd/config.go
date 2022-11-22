@@ -18,6 +18,7 @@ const (
 
 type source struct {
 	Url    string            `yaml:"url"`
+	Filter    string         `yaml:"filter"`
 	Labels map[string]string `yaml:"labels"`
 }
 

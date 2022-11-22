@@ -33,10 +33,10 @@ func Execute() {
 			labels = append(labels, &prom.LabelPair{Name: &k, Value: &v})
 		}
 		log.Printf("[INFO] add url: %s with labels: %v\n", s.Url, s.Labels)
-		m.AddSource(s.Url, labels)
+		m.AddSource(s.Url, s.Filter, labels)
 	}
 
-	srv := &http.Server{Addr: c.Listen, Handler: &handler{m: m}}
+	srv := &http.Server{Addr: c.Listen, Handler: &handler{m: m}} //TODO mux 集成chisel
 	log.Printf("[INFO] starting listen %s\n", c.Listen)
 	go srv.ListenAndServe()
 

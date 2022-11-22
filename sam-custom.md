@@ -2,10 +2,18 @@
 
 **TODO**
 
-- merger ~~ep节点容错~~; 追加dash-id配置参数指标
+- merger ~~ep节点容错~~; ~~追加dash-id配置参数指标~~
 - merger.json动态加载; 支持读取unixDomainSock
 - mids_exporter绑定到本地uds
 
+```bash
+# metricFamily.Metric  
+https://github.com/prometheus/client_model #v1.x 旧版本
+
+
+```
+
+## 
 
 ```bash
 $ ./prometheus-exporter-merger  -config=example2.yaml
