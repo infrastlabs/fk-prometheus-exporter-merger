@@ -12,7 +12,9 @@ ls -lh;
 
 # merger
 RUN \
-wget https://gitee.com/g-mids/fk-prometheus-exporter-merger/releases/download/v22.11.17/prometheus-exporter-merger.tar.gz; \
+# url=https://gitee.com/g-mids/fk-prometheus-exporter-merger/releases/download/v22.11.17/prometheus-exporter-merger.tar.gz; \
+url=https://gitee.com/g-mids/fk-prometheus-exporter-merger/releases/download/v22.11.23/prometheus-exporter-merger.tar.gz; \
+wget $url; \
 ls -lh; 
 
 
@@ -46,6 +48,7 @@ ls -lh;
 # TOOLS
 WORKDIR /download/tool
 RUN \
+curl -fSL -O https://github.com/itchyny/gojq/releases/download/v0.12.9/gojq_v0.12.9_linux_amd64.tar.gz; \
 curl -fSL -O https://github.com/mikefarah/yq/releases/download/v4.30.4/yq_linux_amd64.tar.gz; \
 ls -lh; 
 

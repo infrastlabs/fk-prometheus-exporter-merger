@@ -102,9 +102,16 @@ func (m *merger) merge(ctx context.Context, w io.Writer) error {
 	}
 
 	// wait to process all routines
-	if err := g.Wait(); err != nil {
+	if err := g.Wait(); err != nil { //并发结束
 		return err
 	}
+
+	// TODO filterkey_xxx 的label添加ALL,None 两个默认值
+	//   addStaticFilterByType{加ALL,None} >>遍历type: filterkey_xxx
+	/* for mtype in "es,kafka,redis,minio,..." {
+		//source:= ...
+		addStaticFilterByType(mtype, source, result) //All, None
+	} */
 
 	// sort names
 	var names []string
@@ -121,6 +128,24 @@ func (m *merger) merge(ctx context.Context, w io.Writer) error {
 			return err
 		}
 	}
+	return nil
+}
+
+func addStaticFilterByType(mtype string, source *source, result map[string]*prom.MetricFamily) error {
+	if ""==source.filter {
+		source.filter= "filter_nontype"
+	}
+	metricFamily2, _:= filterMetric(source)
+	//name来自metricKeyName; 但这里的设定不会在http输出生效
+	// result[source.filter] = metricFamily2 //lazy 直接用最后一个  metricFamily
+	
+	// append metrics //同key 不同label的merge?
+	if mfResult, ok := result[source.filter]; ok { //key可获得value值时(*prom.MetricFamily)，value追加
+		mfResult.Metric = append(mfResult.Metric, metricFamily2.Metric...)
+	} else {
+		result[source.filter] = metricFamily2  //不存在时，按name加1条
+	}
+
 	return nil
 }
 
@@ -153,7 +178,13 @@ func filterMetric(source *source) (*prom.MetricFamily, error){
 	}
 	if len(source.labels) > 0 {
 		for _, metric := range metrics {
-			metric.Label = append(metric.Label, source.labels...)
+			metric.Label = append(metric.Label, source.labels...)//arr
+
+			// TODO: try +All, None (All: 避免非merger节点统计的展示指标 匹配不到value)
+
+			//不是在此加label标签..??: filterMetric只filterkey_xx一个metric;
+			//加mtarget标签： 得先加1新的filterkey_redixXX{target=All,None} >> 直接filterMetric 调两次(造source)
+			// metric.Label = append(metric.Label, &prom.LabelPair{Name: &k, Value: &v}) //ref main.go
 		}
 	}
 
