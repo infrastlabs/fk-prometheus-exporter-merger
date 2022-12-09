@@ -3,17 +3,25 @@
 **TODO**
 
 - merger ~~ep节点容错~~; ~~追加dash-id配置参数指标~~
-- merger.json动态加载; 支持读取unixDomainSock
-- mids_exporter绑定到本地uds
+- ~~chserver,取tunMap信息~~, 获取node_exp指标(unixDomainSock)
+- 
+- merger.json动态加载; conf:支持读取unixDomainSock
+- node_exporter > mids_exporter绑定到本地uds
 
 ```bash
 # metricFamily.Metric  
 https://github.com/prometheus/client_model #v1.x 旧版本
 
-
+curl -fSL --unix-socket /tmp/chserver-sock/10002-tmp-node-exporter1.sock http://localhost/metrics
 ```
 
-## 
+**Chisel**
+
+```bash
+http://localhost:8089/api/endpoints/list
+```
+
+## Debug
 
 ```bash
 $ ./prometheus-exporter-merger  -config=example2.yaml

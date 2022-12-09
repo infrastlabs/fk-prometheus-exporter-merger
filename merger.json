@@ -1,5 +1,5 @@
 {
-    "sources": [
+    "sources2": [
       {
         "url": "http://172.25.23.195:50114/metrics",
         "filter": "elasticsearch_version222",

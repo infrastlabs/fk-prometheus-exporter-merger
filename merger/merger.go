@@ -8,11 +8,14 @@ import (
 	"time"
 
 	prom "github.com/prometheus/client_model/go"
+	"gitee.com/g-devops/chisel-poll/chserver"
+	"gitee.com/g-devops/chisel-poll/chserver/chisel"
 )
 
 type Merger interface {
 	Merge(w io.Writer) error
 	AddSource(url string, filter string, labels []*prom.LabelPair)
+	AddChiselService(chiselService *chisel.Service)
 }
 
 type merger struct {
@@ -20,6 +23,7 @@ type merger struct {
 	scrapeTimeout time.Duration
 	client        *http.Client
 	sources       []*source
+	ReverseTunnelService chserver.ReverseTunnelService //+
 }
 
 type source struct {
@@ -51,6 +55,13 @@ func (m *merger) AddSource(url string, filter string, labels []*prom.LabelPair) 
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	m.sources = append(m.sources, &source{url: url, filter: filter, labels: labels})
+}
+
+
+func (m *merger) AddChiselService(chiselService *chisel.Service) {
+	// m.mu.Lock()
+	// defer m.mu.Unlock()
+	m.ReverseTunnelService = chiselService
 }
 
 // Merge sources

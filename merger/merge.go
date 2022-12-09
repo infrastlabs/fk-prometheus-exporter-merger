@@ -19,7 +19,7 @@ import (
 	// "strconv"
 	// "testing"
 	"time"
-
+	"gitee.com/g-devops/chisel-poll/chserver"
 )
 
 func (m *merger) merge(ctx context.Context, w io.Writer) error {
@@ -101,6 +101,13 @@ func (m *merger) merge(ctx context.Context, w io.Writer) error {
 		})
 	}
 
+	// TODO 解析tunService.cmap中status=CONNECT的指标;
+	detailsMap := m.ReverseTunnelService.GetTunnelDetailsMap()
+	for item := range detailsMap.IterBuffered() {
+		tunnel := item.Val.(*chserver.TunnelDetails)
+		fmt.Println(tunnel.Meta.Target)
+	}
+
 	// wait to process all routines
 	if err := g.Wait(); err != nil { //并发结束
 		return err
@@ -149,6 +156,7 @@ func addStaticFilterByType(mtype string, source *source, result map[string]*prom
 	return nil
 }
 
+// 所有指标: 追加mtarget标签;
 func filterMetric(source *source) (*prom.MetricFamily, error){
 	// ref: https://gitee.com/g-mids/fk-exporter_exporter/blob/master/http_test.go
 	rand.Seed(time.Now().UnixNano())

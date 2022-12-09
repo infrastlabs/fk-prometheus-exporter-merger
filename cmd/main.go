@@ -11,6 +11,10 @@ import (
 
 	prom "github.com/prometheus/client_model/go"
 	"github.com/vadv/prometheus-exporter-merger/merger"
+
+	sercmd "gitee.com/g-devops/chisel-poll/chserver/cmd"
+	// clicmd "gitee.com/g-devops/chisel-poll/chclient/cmd"
+	"github.com/gorilla/mux"
 )
 
 func Execute() {
@@ -36,7 +40,21 @@ func Execute() {
 		m.AddSource(s.Url, s.Filter, labels)
 	}
 
-	srv := &http.Server{Addr: c.Listen, Handler: &handler{m: m}} //TODO mux 集成chisel
+
+	r := mux.NewRouter()
+	prefix:= "/api/endpoints"
+	reverseTunnelService:= sercmd.MuxHandle(r, prefix)
+	r.PathPrefix("/").Handler(&handler{m: m})
+	//m.设置ReverseTunnelService
+	m.AddChiselService(reverseTunnelService)
+
+	// localUds := "/tmp/chclient-001.sock"
+	// clicmd.LocalFileServer(conf.ListenUds)
+	// clicmd.StartPollService(conf.PollServerAddr, prefix, conf.PollAgentId, conf.ListenUds)
+
+
+	// srv := &http.Server{Addr: c.Listen, Handler: &handler{m: m}} //TODO mux 集成chisel
+	srv := &http.Server{Addr: c.Listen, Handler: r}
 	log.Printf("[INFO] starting listen %s\n", c.Listen)
 	go srv.ListenAndServe()
 
