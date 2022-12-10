@@ -4,6 +4,7 @@
 
 - merger ~~ep节点容错~~; ~~追加dash-id配置参数指标~~
 - ~~chserver,取tunMap信息~~, ~~获取node_exp指标(unixDomainSock) 22.12.10~~
+- ~~webhookd集成 22.12.12~~
 - 
 - merger.json动态加载; conf:支持读取unixDomainSock
 - ~~node_exporter~~, flag参数; > mids_exporter绑定到本地uds
@@ -14,6 +15,9 @@ https://github.com/prometheus/client_model #v1.x 旧版本
 
 # chisel-uds
 curl -fSL --unix-socket /tmp/chserver-sock/10002-tmp-node-exporter1.sock http://localhost/metrics
+
+# hook
+http://172.17.0.21:8089/api/hook/echo?msg=merger
 ```
 
 **Chisel**

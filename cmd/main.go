@@ -11,6 +11,7 @@ import (
 
 	prom "github.com/prometheus/client_model/go"
 	"github.com/vadv/prometheus-exporter-merger/merger"
+	"github.com/vadv/prometheus-exporter-merger/hook"
 
 	sercmd "gitee.com/g-devops/chisel-poll/chserver/cmd"
 	// clicmd "gitee.com/g-devops/chisel-poll/chclient/cmd"
@@ -44,6 +45,11 @@ func Execute() {
 	r := mux.NewRouter()
 	prefix:= "/api/endpoints"
 	reverseTunnelService:= sercmd.MuxHandle(r, prefix)
+
+	prefix= "/api/hook"
+	hook.SetVars(prefix)
+	hook.MuxHandle(r, prefix)
+
 	r.PathPrefix("/").Handler(&handler{m: m})
 	//m.设置ReverseTunnelService
 	m.AddChiselService(reverseTunnelService)

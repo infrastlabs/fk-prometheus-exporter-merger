@@ -122,7 +122,7 @@ func (m *merger) merge(ctx context.Context, w io.Writer) error {
 }
 
 func (m *merger) tunMerge(result map[string]*prom.MetricFamily) error {
-	mu := &sync.Mutex{}
+	// mu := &sync.Mutex{}
 	detailsMap := m.ReverseTunnelService.GetTunnelDetailsMap()
 	for item := range detailsMap.IterBuffered() {
 		epID:= item.Key
@@ -179,8 +179,8 @@ func (m *merger) tunMerge(result map[string]*prom.MetricFamily) error {
 		// fmt.Println("out:　", out)
 
 		// 按out依次解析name
-		mu.Lock()
-		defer mu.Unlock()
+		// mu.Lock() //just loop 不用锁
+		// defer mu.Unlock()
 		for name, metricFamily := range out {
 			// append labels
 			if len(labels) > 0 {
