@@ -2,21 +2,21 @@
     "sources2": [
       {
         "url": "http://172.25.23.195:50114/metrics",
-        "filter": "elasticsearch_version222",
+        "filter": "filterkey_es",
         "labels": {
           "mtarget": "dev开发-172.25.22.60:9401"
         }
       },
       {
         "url": "http://172.25.23.190:50180/metrics",
-        "filter": "filter_kafka",
+        "filter": "filterkey_kafka",
         "labels": {
           "mtarget": "dev开发-172.25.21.29:9092"
         }
       },
       {
         "url": "http://172.25.23.190:50121/metrics",
-        "filter": "filter_redis",
+        "filter": "filterkey_redis",
         "labels": {
           "mtarget": "DEVOPS-172.25.23.203:6379"
         }

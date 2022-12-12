@@ -21,7 +21,8 @@ import (
 func Execute() {
 
 	var (
-		configPath = flag.String("config", "/config/prometheus-exporter-merger.yaml", "Path to config")
+		// /config/prometheus-exporter-merger.yaml
+		configPath = flag.String("config", "merger.json", "Path to config")
 	)
 	flag.Parse()
 
