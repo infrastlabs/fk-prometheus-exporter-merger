@@ -127,9 +127,9 @@ func (m *merger) tunMerge(result map[string]*prom.MetricFamily) error {
 	for item := range detailsMap.IterBuffered() {
 		epID:= item.Key
 		tunnel := item.Val.(*chserver.TunnelDetails)
-		fmt.Println("tun-Meta: ", tunnel.Meta)
+		// fmt.Println("tun-Meta: ", tunnel.Meta)
 		if tunnel.Status != "CONNECT" {
-			fmt.Println("[ERR] tunnel.Status: %s", tunnel.Status)
+			// fmt.Println("[ERR] tunnel.Status: %s", tunnel.Status)
 			return nil //err
 		}
 
@@ -164,7 +164,7 @@ func (m *merger) tunMerge(result map[string]*prom.MetricFamily) error {
 		k:= "mtarget"
 		v:= fmt.Sprintf("%s-%s", tunnel.Meta.Desc, tunnel.Meta.Target)
 		labels = append(labels, &prom.LabelPair{Name: &k, Value: &v})
-		fmt.Printf("[INFO] add url: tun-%s with labels: %v\n", tunnel.Meta.Target, labels)
+		// fmt.Printf("[INFO] add url: tun-%s with labels: %v\n", tunnel.Meta.Target, labels)
 		
 
 		//====func (body, labels)================================
