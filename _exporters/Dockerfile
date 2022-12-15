@@ -43,6 +43,11 @@ curl -fSL -O https://github.com/ncabatoff/process-exporter/releases/download/v0.
 curl -fSL -O https://github.com/prometheus-community/systemd_exporter/releases/download/v0.5.0/systemd_exporter-0.5.0.linux-amd64.tar.gz; \
 ls -lh; 
 
+# ext1: +ch
+WORKDIR /download/oth
+RUN \
+curl -fSL -O https://gitee.com/g-mids/fk-clickhouse_exporter/releases/download/v22.12.13/clickhouse_exporter.tar.gz; \
+ls -lh; 
 
 
 # TOOLS
